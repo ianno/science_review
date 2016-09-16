@@ -8,6 +8,9 @@ as a draw from a uniform distribution.
 
 import csv
 import re
+import numpy as np
+import scipy as sp
+import scipy.stats as stats
 
 #file name
 FILE = './data/Bishayee Colony Counts 10.27.97-3.8.01.csv'
@@ -24,6 +27,9 @@ COL_NAME = 0
 #regex representing a number with decimal digits
 RE_NUM = '^\d+$'
 RE_NAME = '^no.*$'
+
+FREQ = 1./10
+DF = 9 #degrees of freedom
 
 csv_file = open(FILE)
 csv_reader = csv.reader(csv_file)
@@ -82,3 +88,30 @@ At the end, we were able to 'decode' the policy that was followed.
 
 It still doesn't work w=for other files, or for the terminal digits test...
 """
+
+#merge Counts
+total_c = c1 + c2 + c3
+
+#take only last digit
+lst = [int(x[-1]) for x in total_c]
+
+#compute frequencies
+freq = {}
+exp_freq = len(lst)*FREQ
+
+#not nice.
+#find a smarter way to do this
+#maybe scipy.stats.histogram
+for i in range(0,10):
+    freq[i] = len([1 for x in lst if x==i])
+
+chi_val = 0
+for i, f in freq.items():
+    chi_val = chi_val + ( (f - exp_freq) ** 2) / exp_freq
+
+print freq
+print chi_val
+
+#find P-value for chi_valq
+p_val = sp.stats.chisqprob(chi_val, DF)
+print p_val
