@@ -15,7 +15,7 @@ import scipy.stats as stats
 FREQ = 1./10
 DF = 9 #degrees of freedom
 
-c1, c2, c3 = read_rts_count()
+c1, c2, c3 = read_rts_colony()
 
 print len(c1)+len(c2)+len(c3)
 
@@ -40,14 +40,14 @@ lst = [int(x[-1]) for x in total_c]
 freq = {}
 exp_freq = len(lst)*FREQ
 
-#not nice.
-#find a smarter way to do this
-#maybe scipy.stats.histogram
-for i in range(0,10):
-    freq[i] = len([1 for x in lst if x==i])
+#find frequencies
+hist = sp.stats.histogram(lst, 10)
+freq = hist.count
+#for i in range(0,10):
+#    freq[i] = len([1 for x in lst if x==i])
 
 chi_val = 0
-for i, f in freq.items():
+for f in freq:
     chi_val = chi_val + ( (f - exp_freq) ** 2) / exp_freq
 
 print freq
