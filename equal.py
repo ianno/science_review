@@ -16,7 +16,7 @@ import scipy.stats as stats
 FREQ = 1./10
 DF = 9 #degrees of freedom
 
-c1, c2, c3 = read_rts_count()
+c1, c2, c3 = read_rts_colony()
 
 print len(c1)+len(c2)+len(c3)
 
@@ -67,7 +67,7 @@ chi_val = chi_val + ( ((len(lst)-sum_eq) - rest_freq) ** 2) / rest_freq
 
 print freq
 print sum_eq/len(lst)
-print sum_eq/5155
+#print sum_eq/5155
 print chi_val
 
 #find P-value for chi_valq
