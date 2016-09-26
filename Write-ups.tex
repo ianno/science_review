@@ -250,10 +250,7 @@
 
 
 \begin{abstract}
-THIS IS THE LATEST DRAFT.
-
-In this article we review the paper ``Statistical analysis of numerical
-pre-clinical radio-biological data'' \cite{pitt2016statistical}. The work is submitted as a term
+This review is a term
 project for the Graduate Level Course on Statistical Modeling and
 Practices at University of California Berkeley. The authors are graduate
 students from department of EECS and Civil\&Environmental Engineering
@@ -263,7 +260,7 @@ presented in the paper, and discuss some other non-parametric tests and
 results eg. Permutation tests, that can be seen as an alternative to
 making certain assumptions and finding surprises in the data. No attempt
 has been made to look into the biological aspects and validity of
-certain assumptions related to them. Also we did not dive into exhaustive literature search for common practices for such data. We attempt to encourage the use of permutation tests in similar problem set-ups.
+certain assumptions related to them. We did not search the literature for other methods for fraud detection. We do believe that permutation tests have promise, as demonstrated by calculations we present. 
 \end{abstract}
 
 \section{Introduction} % (fold)
@@ -271,99 +268,50 @@ certain assumptions related to them. Also we did not dive into exhaustive litera
 
 % section introduction (end)
 
-We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss some more ways of identifying anomaly, and present results based on our analysis using Permutation Tests. We believe this practice is not only consistent with the aim of the original paper - promoting simple statistical tools for detecting anomaly, but also provides a validation of their results to some extent.
+We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss other methods to identify anomalies, and present results based on our analysis using Permutation Tests. Permutation tests are consistent with the aim of the paper--providing simple tools to detect anomalies--and validate the results in the paper, leading to the same conclusions.
 
-As a small comment on the readability, we would like to mention that the organization of the original paper could have been much better with the use of clear numberings for sections and subsections, and re-arranging some of the sections. Next, we discuss the problem set up considered by the authors, and make some remarks on the methods used. In Section~\ref{reproducibility-of-results} we replicate authors' work and results to some extent. In Section~\ref{our-analysis}, we discuss some gaps as a reader and attempt to take a step back and do some tests, and point the gaps in the work and how to address them using statistical methods. We conclude with some remarks in Section~\ref{conclusion}.
+We offer a minor suggestion: we would have found the paper easier to read if the sections and subsections had been numbered; reorganization of some of the material would have helped, too. Next, we discuss the problem set up considered by the authors, and make some remarks on the methods used. In Section~\ref{reproducibility-of-results} we replicate authors' work and results to some extent. 
+In Section~\ref{our-analysis}, TODO rewrite:we discuss some gaps as a reader and attempt to take a step back and do some tests, and point the gaps in the work and how to address them using statistical methods. 
+We conclude with some remarks in Section~\ref{conclusion}.
 
 \subsection{Problem Set Up}\label{problem-set-up}
 
 The paper begins by voicing a growing concern towards ``Scientific fraud
 and Plagiarism'' in the scientific community and is successful in
-presenting a strong message. The authors present some statistical figures and attempt to point the existence of easy statistical tools to detect fabricated data and ignorance about the tools. Moving beyond the message, we next discuss the specific problem set up. The authors in the paper analyze anomalous patterns in radio-biological
-data from a lab, in particular they were able to detect suspicious
-patterns in the data reported by one of the 10 researchers (whom we
-shall refer to as RTS as per their notation). They do three different
+sending a strong message. The authors present some statistical figures and point the existence of easy statistical tools to detect fabricated data and ignorance about the tools. 
+
+The authors examine patterns in radio-biological data. They find that data reported by one of 10 researchers, the "RTS," is suspicious. 
+They perform three different
 tests to validate their suspicion and also validate their tests and
 assumptions by looking at the data obtained from three other sources.
 
-In particular, each researcher had to report three different measurements for two
-different types of numbers - Colony Count and Coulter Count. Each of
-these numbers represents an observation of number of cells surviving some
-experiment, and probably three measurements are done in order to be more
-accurate about the observations. The concern of the authors is that it is easy to fabricate a triplet such that you get a desired mean for that particular set of observations. One can, in
-fact, do that by setting the mean and then using two roughly equal
-constants, calculate the other two values as this initial value plus or
-minus the selected constants. Such a fabrication can be flagged easily
-by looking at the triplets and counting how many of them contain the
-mean as one of the three values.
+Each researcher made two types of triplicate measurements - colony counts and Coulter counts.  
+The authors suspect that the RTS fabricated data triples to get the mean s/he desired in each triple by setting one observation equal to the desired mean and the other two equal distances above and below that value. This would result in triples that contain the (rounded) mean as one of the values.
 
-Having made these observations, the
-authors mainly focus ``on developing a method to calculate bounds and
-estimates for the probability that a given set of n such triplicates
-contains k or more triples which contain their own mean'' and mention
-that such probability bounds should be helpful across various other
-areas. Under these models they show that RTS's data is pretty surprising
-and that the chances of seeing such a data are astronomically low.
-Besides this specific set up (which requires some assumptions) they also
-look at some more general tests that have been used in the past to
-detect anomalous patterns. Namely they test for - (1) Distribution of
-the least significant digit, and (2) Chances of observing equal pairs of
-terminal digits. Ideally, for (1), we expect to see a uniform
-distribution over \(\{0, 1, \ldots, 9\}\) unless the distribution that
-underlies the data suggests otherwise. Similarly, for (2), ideal chances
-of having an equal pair of terminal digits is 1 in 10.
+The methodological contribution of the paper is “bounds and estimates for the probability that a given set of n such triplicates contains k or more triples which contain their own mean” when each of the $n$ triples is independent and identically distributed (IID) Poisson, and triples are independent of each other. (Different triples may have different Poisson rates.)
+For this Poisson model, the chance that the RTS's data would contain so many triples that include their mean is astronomically low.
+They also apply more common tests for anomalous data, based on statistics such as the frequency of the terminal digit and the frequency with which the last two digits are equal.
 
 However, some of the questions that were slightly untouched upon are discussed below:
 
 \begin{itemize}
 \item
-  The paper begins with the RTS being labeled as anomalous and then a
-  probability model is developed to determine the chances of seeing the
-  mean in a triplet. The authors mentioned briefly that ``Having
-  observed what appeared to us to be an unusual frequency of triples in
-  RTS data containing a value close to their mean, we used R to
-  calculate the mid-ratios for all of the colony data triples that were
-  available to us''. The authors didn't comment how were they able to
-  identify the particular researcher. Whether they partitioned the data
-  into an observation set and then ran tests on the validation set is
-  also unclear and the tables tend to hint otherwise (as the authors seem to be using almost entire data for reporting statistics). An ideal practice would be to classify the data into training and test set.
-  The partitioning is important as \textit{the data that raised the suspicion if used to
-  validate it, will most likely give a very biased result}.
+  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal p-values are likely to be misleadingly small.
 \item
-  The authors ran tests for the last digit and equality of the pair
-  of terminal digits on the datasets, which can be seen as a validation
-  of their suspicion. However all the results that are produced are of
-  the form ``RTS vs the Rest''. It would have been more convincing if
-  the authors presented some justification or some experiment results
-  which justified such a treatment. The ideal scenario would have been
-  the presentation of results in a ``Take - One - Out'' fashion, where every
-  individual would have been compared to the rest of them pooled
-  together. This is the core principle behind the two-sample permutation
-  tests, where we test the strong null hypothesis that each researcher's
-  data is just a random sample from the population of all the data put
-  together. We will dive into this in Section~\ref{our-analysis}.
-\item
-  There was very little discussion about the huge variation in number of data points across the
-  researchers. For some reason, the data collected by the RTS was more
-  than twice the data put together by twelve other researchers. Such an
-  overwhelming fraction of samples belonging to one researcher has some
-  implications on Permutation tests as well which we explore in Section~\ref{our-analysis}.
+  Most of the tests compare the RTS data to what would be expected for a model of the observations, then validate the test by comparing data pooled for the other researchers to the model. Pooling the data in this way may hide anomalies in the other researchers' data. Permutation tests allow the data for the RTS to be compared to the data for the other researchers (and to compare each researcher's data with that of the group) without positing a model for how the data were generated. On the other hand, the bulk of the data available are for the RTS, so to reject the hypothesis that another researcher's data looks like a random sample from the pooled data--if it includes the RTS's data--primarily shows that that researcher's data is not like that of the RTS, not that they are suspicious. See section~\ref{our-analysis} of this review for more discussion.
 \end{itemize}
 
     \section{Reproducibility of Results}\label{reproducibility-of-results}
 
-In this section, we replicated the statistical experiments that were
-conducted by the researchers. There were several mismatches in our first
-implementation because of subjectivity at certain places. However, with
-some trial and error and fine tuning we were able to replicate most of
+This section discusses our attempts to replicate the analyses in the paper. 
+After some trial and error and fine tuning we were able to replicate most of
 their results, obtaining similar results in the other cases. All our
 results and code are available at \hyperlink{https://github.com/ianno/stat215a_project1}{github}[github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
 
 
     \subsection{Mid-Ratio Analysis}\label{mid-ratio-analysis}
 
-To begin with, the authors first consider the histogram of mid-ratio
-which is defined for a triplet \((a, b, c), a<b<c\) as
+The authors first consider the mid-ratio, which is defined for a triplet \((a, b, c), a<b<c\) as
 \(\frac{b-a}{c-a}\), and show that the histogram of RTS concentrates
 abnormally around \(0.4-0.6\) range, compared to everyone else put
 together. We tried to reproduce the histogram in python using the
