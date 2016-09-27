@@ -90,3 +90,11 @@ ENV/
 #*.xlsx
 #*.tex
 #*.png
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.out
+*.fls
+*.sunctex*
+
