@@ -251,7 +251,7 @@
 
 \begin{abstract}
 This review reproduces tests and results
-presented by Pitt and Hill and discusses some other non-parametric techniques, such as permutation tests, which allow to analyze data with less restrictive assumptions. 
+presented by Pitt and Hill and discusses some other non-parametric techniques, such as Permutation Tests, which allow to analyze data with less restrictive assumptions. 
 The focus of this review is on the statistical methodology more than the underlying biological aspects and assumptions of the original work, which are not discussed.
 Although not expert in statistical methods for fraud detection, we do believe that permutation tests are promising in this context, as demonstrated by the results presented here. 
 This review has been developed as a term
@@ -266,9 +266,11 @@ students from EECS and Civil\&Environmental Engineering departments.
 
 We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss other methods to identify anomalies, and present results based on our analysis using Permutation Tests. Permutation tests are consistent with the aim of the paper--providing simple tools to detect anomalies--and validate the results in the paper, leading to the same conclusions.
 
-We offer a minor suggestion: we would have found the paper easier to read if the sections and subsections had been numbered; reorganization of some of the material would have helped, too. Next, we discuss the problem set up considered by the authors, and make some remarks on the methods used. In Section~\ref{reproducibility-of-results} we replicate authors' work and results to some extent. 
-In Section~\ref{our-analysis}, TODO rewrite:we discuss some gaps as a reader and attempt to take a step back and do some tests, and point the gaps in the work and how to address them using statistical methods. 
-We conclude with some remarks in Section~\ref{conclusion}.
+Before diving into technical details, we offer a minor suggestion: we would have found the paper easier to read if the sections and subsections had been numbered.
+The review is organized as follows.
+In Section~\ref{reproducibility-of-results} we replicate authors' work and results. 
+In Section~\ref{our-analysis}, we analyze weaknesses of the approach followed in the paper and propose additional techniques to consolidate results. 
+We finally draw our conclusions in Section~\ref{conclusion}.
 
 \subsection{Problem Set Up}\label{problem-set-up}
 
