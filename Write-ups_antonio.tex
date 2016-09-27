@@ -419,22 +419,22 @@ Here are a few general comments on the methodology adopted by the authors:
 
 
 
-    \section{Our Analysis}\label{our-analysis}
+    \section{Proposed Analysis}\label{our-analysis}
 
-    The authors begin by singling out that the histogram of RTS looks anomalous
-compared to the rest of them put together. They assume that one is
-likely to observe uniform distribution for mid-ratio, and this fact is
-validated by the histogram of the 9 researchers put together which looks
-close to uniform. The first question that came to our mind which motivated this section was - how do we single out the
-anomalous researcher if we don't know a priori who he/she is? If we decide on the histogram as the first test, then a simple
-way would be to plot histogram of the mid-ratios for the data
-collected by all researchers individually, and look for anomalous patterns
-across all these plots. For sake of similarity to the authors' set up,
-one will detect anomaly by contrasting each researcher's histogram with
-the histogram of all others put together. Such an experiment gives very
-interesting results and also raises an important issue with this
-approach.
+We claim that the approach followed in the paper is flawed by the initial suspicion towards RTS, for which the authors do not provide clear support.
+Additionally, the choice of grouping all the other lab members in a single group \textit{against} RTS seems unfair in principle.
+The main concern is that other members in the lab could have collected data similar to those of RTS --maybe because of particular characteristics of the experiments, or for common malpractice-- which is not evident when all the observations are grouped in a single pool.
+
+Moreover, how do we single out the
+malicious researcher if we don't know \textit{a priori} who he/she is? 
+If we decide to use the histogram of sample mid-ratios as the first test, 
+then a simple
+way would be to plot histograms for all researchers, \textit{individually} and as a group, and look for anomalous patterns
+across all these plots. 
+Such an experiment, illustrated in Figure~\ref{fig:individuals}, gives very
+interesting results and also raises an important questions about the approach followed in the paper:
 \begin{figure}[H]
+\label{fig:individuals}
 \centering
 \includegraphics[width=0.8\linewidth]{images/new_mid_ratio.png}
 \caption{Individual Histograms for the Colony Data}
@@ -442,79 +442,83 @@ approach.
 
 \begin{itemize}
 \item
-  First, the histogram for researchers with labels ``B, C, E, F, G, H, I'' do not
-  seem to be close to uniform as well. In particular, ``B'' and ``C''
-  have a very different histogram when contrasted with the histogram for
-  uniform distribution. They have distinct peaks but around 0.2 and 0.4
-  respectively.
+  The histograms for researchers with labels ``B, C, E, F, G, H, I'' do not
+  seem to be close to uniform as well. 
+  In particular, ``B'' and ``C''
+  look very unlikely to represent an underlying
+  uniform distribution (they have distinct peaks but around 0.2 and 0.4
+  respectively).
 \item
-  Second, when we try to contrast the individual histogram of researchers
-  with rest of them combined which includes RTS, the new ``rest''
-  histograms are dominated by RTS's data because of the comparatively
-  huge fraction of data collected by RTS, and so most of the other
-  researchers look anomalous when contrasted with it.
+ The amount of data collected by RTS is more than the data from all of the other researchers considered together.
+ This means that RTS heavily influence the histogram when the data are collected in a single pool and, therefore, patterns from the other
+  researchers look anomalous when compared to it.
 \end{itemize}
 
-The previous two remarks point out the limitations on the visual
-comparison of histogram and assumption of ``uniform distribution'' for
-mid ratios. Next we try to present a different viewpoint which has two advantages - it is free of such assumptions, and thus extends to far more general cases where even slight intuition about the data is missing.
+The previous two remarks point out the limitations of this ``visual''
+comparison of histograms, as well as the assumption of uniform distribution for
+sample mid-ratios. 
+In the following sections, we present an alternative method to compare samples, based on permutation tests, which has the advantage of not assuming an uniform distribution of the sample mid-ratios, and thus is more general.
 
 
 
-    \subsection{Quick Primer to Permutation
+    \subsection{Primer on Permutation
 Tests}\label{quick-primer-to-permutation-tests}
 
-As discussed above, we felt that the justification for
-singling out the particular RTS was incomplete. So, we took a step back,
-and did permutation tests to identify anomalous patterns across different
-researchers. We briefly discuss the test set up and the philosophy of the test.
-
 Given a treatment and control group of size \(T\) and \(C\)
-respectively, we want to test the hypothesis if the treatment has an
-effect on the population. In permutation test, the data pooled together
-is considered as the population (here it will have size \(N = T+C\)).
-Next, one decides on a test statistic that is consistent with our
-hypothesis and is expected to contrast the two set of samples if the
-treatment has any effect. The distribution of test statistic has an
-exact theoretical representation but is often computationally
-intractable. An empirical approximation can be made by randomly
-partitioning the data into groups of \(T\) and \(C\) several times, and
-computing the test statistic contrasting the two datasets. With the
-distribution in hand, we can now test how surprising was the outcome
-that we originally had.
+respectively, we want to test if the treatment has an
+effect on the population, which is the data pooled together
+(it will have size \(N = T+C\)).
+If the
+treatment has an effect, a test statistic that is consistent with the test
+hypothesis is expected to be different according to the two set of samples.
+Computing the exact theoretical representation of the distribution of the test statistic, however, is often computationally
+intractable. 
+An empirical approximation can be formulated by randomly
+partitioning the data into groups of the same size of \(T\) and \(C\) several times, and
+computing the test statistic for the two datasets repeatedly. 
 
 The conclusion that one draws when the p-values are very low is that \textit{the
-two groups are different to each other} than expected had we randomly partitioned
-the pooled dataset, i.e., the labels of the data matters.
+treatment has an effect}, i.e. the two groups are different than each other.
 
 
     \subsection{Permutation Tests for
 Mid-Ratio}\label{permutation-tests-for-mid-ratio}
 
-Because we agree with the remark of the authors that it is easy to tweak
-the data to get a desirable triplet, we decide to set the difference in
-standard deviation of mid-ratios of two datasets. The choice of standard deviation as the first statistic in place of mean
-makes sense because uniformity as well as convenient tweaking will lead
-to the same expectation of 0.5; and we expect standard deviation to capture
+Since we agree with the authors that it is easy to tweak
+the data to get a desirable sample triple, we decided to start comparing two datasets using the difference in
+standard deviation of their sample mid-ratios. 
+The choice of standard deviation as the first statistic in place of mean
+is motivated by the intention of capturing
 the \textit{unintentional reduction in spread caused in data due to
 intentional adjustments}.
 
-We consider each researcher equivalent to a treatment. That is, for a
-given researcher, eg. A with dataset \(D_A\) with size \(n_A\), we look
-at test statistic computed for a random partition of the entire data
-(size \(N\)) into two groups \(n_A\) and \(N-n_A\) and compute the test
-statistic. We repeat this experiment 1000 times to plot the empirical
-distribution and then compute the p-values. We obtained $0$ $p$-value for A, B,
-D, and RTS; and \(<0.01\) p-value for all others except E,F,G which
-indicates that almost all datasets are surprising with respect to this
-test-statistic. We would like to note that here $0$ $p$-value means that there is less than $1$ in $1000$ chance of observing the event, because of finite resolution owing to $1000$ tests. We would also like to mention that RTS is still the most surprising if one looks at the location of the test-statistic in the
+We consider each researcher's data equivalent to a treatment group. 
+That is, for a
+given researcher, say A, with dataset \(D_A\) with size \(n_A\), we look
+at the test statistics computed for a random partition of the entire data
+(size \(N\)) into two groups \(n_A\) and \(N-n_A\) and compute their difference. 
+We repeat this experiment 1000 times to plot the empirical
+distribution and then compute the p-values. 
+We obtained the $p$-values:
+\begin{itemize} 
+\item $0$, for investigators A, B,
+D, and RTS;
+\item \(<0.01\), for C, H, I;
+\item  \(>0.01\), for  E,F,G.
+\end{itemize}
+
+Our results indicate that almost all datasets are surprising with respect to the chosen
+test-statistic. 
+We would like to remark that here a $0$ $p$-value means that there is less than $1$ in $1000$ chance of observing the event, because of finite resolution owing to $1000$ tests. 
+We would also like to mention that RTS is still the most surprising if one looks at the location of the test-statistic in the
 tails of the distribution.
 
-Next we look at \(\ell_1\) distance between the density, followed by
-\(\ell_1\) distance between the CDF of two samples for each researcher,
-and obtain very similar results as in the previous case, that is several
-researchers will be rejected by the test at significance level of even
-\(1 \%\). We present all these $p$-values in Figure~\ref{mid_ratio_perm}.
+Moreover, we looked at the \(\ell_1\) distance between the density, as well as the
+\(\ell_1\) distance between the CDF of two samples for each researcher.
+In both cases, we obtained results very similar comparable to the previous case, with several
+researchers that were rejected by the test at significance level of even
+\(1 \%\). 
+Figure~\ref{mid_ratio_perm} summarizes all the $p$-values discussed in this section.
 
 \begin{figure}[htbp]
 \centering
@@ -523,45 +527,37 @@ researchers will be rejected by the test at significance level of even
 \label{mid_ratio_perm}
 \end{figure}
 
-\subsubsection{Limitations of Permutation Test} % (fold)
+\subsubsection{Limitations of Permutation Tests} % (fold)
 \label{ssub:limitations_of_permutation_test}
 
 % subsubsection limitations_of_permutation_test (end)
-A concern in such a test is the effect of the huge fraction of the data
-contributed by RTS. The $p$-values indicate the chance of the difference
-between the two groups - treatment and control, so a low $p$-value means
+The main concern we have for the set up of the permutation tests we discussed is the huge fraction of the data
+collected by RTS. 
+The $p$-values indicate the chance of the difference
+between the two groups (treatment and control), so a low $p$-value means
 that the treatment group is likely to be different than the control
-group. And here the control group has a dominant effect from the data
-provided by RTS, hence a heuristic conclusion is that the data of the
-other lab mates is very different than the data of RTS. To be more
-concrete about drawing conclusions about the surprises in data about
-other researchers, we exclude the data provided by RTS to run the
-permutation tests. We will like to note that this has a bias because we
-ignore almost 2/3rd of the data, but doing so does give some answers
-that we were expecting before running these tests, which were consistent with the authors' expectations.
+group. 
+Here, however, the control group (RTS) has a dominant effect, hence the conclusion that the data of the
+other lab members are very different from the data of RTS. 
+
+To draw more accurate conclusions about the other researchers, we performed additional permutation tests excluding data provided by RTS, illustrated in Figure~\ref{fig:perm_2}.
+This approach has a bias, because almost 2/3rd of the data are ignored, but it allows to give some answers which were consistent with the authors' expectations-- there is some statistical evidence that the others did not fabricated data.
 
 \begin{figure}[htbp]
+\label{fig:perm_2}
 \centering
 \includegraphics[width=0.8\linewidth]{images/mid_ratio_perm_no_rts.png}
 \caption{Results for Permutation Tests without RTS  for Mid Ratios}
 \end{figure}
 
-Owing to the high $p$-values, now we may say that the data provided by each individual researchers looks like a
-random partitioning when compared to the entire data pooled together
-excluding RTS, which gives some statistical evidence to RTS being the
-odd one out.
-
     \subsection{Additional Tests for Digit
 Analysis}\label{additional-tests-for-digit-analysis}
 
-For the terminal digit and equal digits tests, we extended the tests provided by
-the authors by considering the individual contribution of the single
-members of the lab and performing
+For the terminal digit and equal digits tests, we extended the tests in the paper by running the additional experiments: 
 \begin{itemize}
-    \item chi-square test for goodness of fit
-for each of the lab members and outside labs for terminal digit analysis,
-    \item chi-square test for goodness of fit for each of the lab
-members and outside labs for equal digits analysis and,
+    \item chi-square test for goodness of fit for terminal digit analysis,
+for each of the lab members and outside labs;
+    \item chi-square test for goodness of fit for equal digits analysis, for each of the lab members and outside labs;
     \item permutation tests for terminal digit analysis considering RTS and the other investigators.
  \end{itemize}
 
@@ -570,25 +566,26 @@ Analysis}\label{chi-square-test-tests-for-terminal-digit-analysis}
 
 To understand how single investigators contributions are distributed
 with respect to RTS and the outside labs, we decided to analyze data
-from all the other investigators taken one by one. To do so, we
-performed the chi-square test for goodness of fit for each of them. The
+from all the other investigators individually. To do so, we
+performed a chi-square test for goodness of fit for each of them. The
 following tables summarized our results:
 
 \begin{figure}[H]
+\label{fig:chi-sum}
 \centering
 \includegraphics[width=0.7\linewidth]{images/raaz_term_chi_summary.png}
-\caption{Chi Square Tests for Terminal Digits in Coulter and Colony
+\caption{Chi Square Tests for Terminal Digits in Coulter and colony
 Counts}
 \end{figure}
 
-Reading the tables, one can notice that $p$ value for D, for Coulter Data is $<1\%$.
+Reading the table in Figure~\ref{fig:chi-sum}, one can notice that the $p$-value for D, for Coulter Data is $<1\%$, while all the other $p$-values are well above $1\%$.
 
     \subsubsection{Chi-square test Tests for Equal Digits
 Analysis}\label{chi-square-test-tests-for-equal-digits-analysis}
 
 Also for the Equal Digits Analysis we performed the chi-square test for
 goodness of fit using the data of the individual investigators in the
-lab, in a similar fashion as before.
+lab, in a setting similar to the previous test.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\linewidth]{images/raaz_eq_chi_elaborate.png}
@@ -596,7 +593,7 @@ lab, in a similar fashion as before.
 Counts}
 \end{figure}
 
-Here none of the $p$-values look abnormally low. One can argue that for $A$ it is very high, but going by the practice of deciding thresholds before seeing the results none of the results are surprising.
+Here none of the $p$-values look abnormally low. One can argue that for $A$ it is very high but, according to the practice of deciding thresholds before seeing the results, none of the results are surprising.
 
     \subsubsection{Permutation Test for Terminal Digit
 Analysis}\label{permutation-test-for-terminal-digit-analysis}
@@ -612,10 +609,12 @@ same test statistics as for mid-ratios:
 
 In all the above cases, it is possible to see how RTS data is
 consistently suspicious, which is a confirmation of the authors'
-suspects. And as pointed before, the huge fraction of data contributed
+suspects. And, as pointed before, the huge fraction of data collected
 by RTS contributes towards the low $p$-values for other individual
-researchers as well. We tried permutation tests after excluding RTS data
-and get better $p$-values as before, for brevity we do not mention the
+researchers as well. 
+We performed also permutation tests excluding RTS data
+and got better $p$-values (similarly to the previous experiment). 
+For sake of brevity, we avoid mentioning the
 values here.
 
     \section{Conclusion}\label{conclusion}
