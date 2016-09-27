@@ -301,42 +301,46 @@ However, some of the questions that were slightly untouched upon are discussed b
 
     \section{Reproducibility of Results}\label{reproducibility-of-results}
 
-This section discusses our attempts to replicate the analyses in the paper. 
+This section discusses our efforts to replicate the analyses in the paper. 
 After some trial and error and fine tuning we were able to replicate most of
 their results, obtaining similar results in the other cases. All our
-results and code are available at \hyperlink{https://github.com/ianno/stat215a_project1}{github}[github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
+material and code is available on \hyperlink{https://github.com/ianno/stat215a_project1}{github}[github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
 
 
     \subsection{Mid-Ratio Analysis}\label{mid-ratio-analysis}
 
-The authors first consider the mid-ratio, which is defined for a triplet \((a, b, c), a<b<c\) as
-\(\frac{b-a}{c-a}\), and show that the histogram of RTS concentrates
-abnormally around \(0.4-0.6\) range, compared to everyone else put
-together. We tried to reproduce the histogram in python using the
-numpy's histogram plots (and in an early test also using Matlab) and it
-looked very different. Then, we tweaked the histogram to include the
-right edge of the bins and it looked very similar to the Figure(1) of
-the paper. But the histogram still had differences, for instance, the
-authors get very close to 50\% chance of obtaining a mid-ratio of
-0.4-0.5, while we get close to 44\% chance. Also, we used 1361 values
-for computing the histogram after removing the triplets with missing
-values (in fact, 1360 because one triplet had all equal values) while
-the authors used 1343/1361 and provided no justification for the same.
-Similarly, we had 595 triplets to plot the histogram for the rest of the
-researchers (of the same lab). However, our plots can be categorized
-very similar to theirs after the bin adjustment, and we categorized
-these differences too minor for investment of more time.
+The authors first consider the mid-ratio of th samples, which is defined for a triplet \((a, b, c), a<b<c\) as
+\(\frac{b-a}{c-a}\), and show that the histogram of RTS' samples concentrates
+abnormally around the \(0.4-0.6\) range, compared to the samples taken by all the other lab members. 
+We tried to reproduce the histogram using both numpy (python) and Matlab, but it
+looked very different from the one on the paper. 
+To get a closer representation, we had to tweak the default histogram plot function (every bin had to include its right bound). 
+The histogram, however, still had some differences.
+For instance, 
+in the paper, the chance of obtaining a mid-ratio of
+0.4-0.5 is almost 50\%, while in our case is 44\%.
+Additionally, we could not find any information about the data cleaning and pre-processing procedures used by the authors.
+After cleaning the data, for instance, we got 1360 usable RTS samples out of 1361, while
+the authors only used 1343.
+A similar situation occurred for the number of samples of the other lab members.
+Although not being a major issue, this has had a negative impact on our analyses since we have not been able to reproduce \textit{exactly} all of the results.
 
-    \subsection{Probability Model}\label{probability-model}
 
-In this section, we followed the equations provided by the authors in
-Appendix A to calculate the probability - $\lambda$ table. Here, first they model each triplet of observations as a three identically independent distributed (i.i.d.) Poisson random variables with mean $\lambda$ (which could differ from triplet to triplet). Next they model the occurrence of mean (rounded off) in such a triplet as a Bernoulli random variable whose success probability is tabulated in Table 1 as a function of $\lambda$. They provided analytical expressions in the Appendix (which looked fine at a glance) to compute this table. We could
-replicate Table 1 from the paper and the trends in the values as a function of $\lambda$. However for large $\lambda$ for couple of implementations we got $0$ value, in place of very small values for the probabilities, and we didn't improve our implementation.
+    \subsection{Probability Model for Sample Triples}\label{probability-model}
+TODO: is this correct?check
 
-The authors used the Table 1 in two ways to choose the probability for the Bernoulli random variables. First, they used the maximum value from Table 1 as a uniform parameter for all triplets, essentially treating all triplet as i.i.d. Bernoulli($0.42$), and in the second set of results, they used the Maximum Likelihood estimate (sample mean in this case) for each triplet to find the probability of success value in the table thereby treating each triplet having a different probability of success.
+The authors modeled each triple of observations as three i.i.d. Poisson random variables with mean $\lambda$ (which could be different for each triple).
+The occurrence of the (rounded) mean of each triple as one of its value is then modeled as a Bernoulli random variable parameterized according to a certain $\lambda$ (tabulated in Table 1).
+The author provided also an analytical description of this model, which in our opinion is reasonable, in the Appendix.
+We have been able to replicate Table 1 according to the given analytical model, although we got some numerical issues for large $\lambda$ (which, however, did not impact the rest of our analysis).
+With this information, proving the correctness of the hypothesis test 1 in the paper was straightforward.
 
+TODO we missed coverage of hypothesis 1?
     \subsubsection{Using $\lambda$ to obtain
 p-values}\label{using-lambda-to-obtain-p-values}
+TODO: this needs major revision.
+it does not say what they did. and why our implementation doesn't work for larger values. Also, we should cite the literature reference we make.
+Also, do we miss hypothesis test 3?
 
 In this section, the researchers used their probability model calculations to compute the chance of observing the data. While replicating,
 it worked fine for us with the colony data as the mean of the counts $<100$, and we were able to replicate their computations to minor errors. However, when we conducted the same experiments for Coulter data, due to the limitation of our implementations, we could barely come up with a reasonable probability value as the mean value of counts were a lot larger, and thus we could not replicate the values for the Coulter. We tried a regression based on the statement from the
@@ -356,55 +360,60 @@ literature that when $\lambda = 100$ we use probability $<0.14$, and for $\lambd
 
     \subsection{Digits Analysis}\label{digits-analysis}
 
-To find additional confirmations on the suspect of fabricated data, the
+To find additional confirmations on the suspicion of fabricated data, the
 authors perform two additional tests, namely \textit{terminal
 digit analysis} and \textit{pair of equal terminal digits analysis}. Both
-such analyses are based on existing work (and intuition) that the least significant digit of a sample is, in general, not very informative, i.e.~it is reasonable to expect it to be uniformly distributed random variable.
+such analyses are based on the intuitive observation (also supported by a reference in the paper) that the least significant digit of a sample is, in general, not very informative, i.e.~it is reasonable to expect it to be uniformly distributed random variable.
 
 
 
 \subsubsection{Terminal digit analysis}\label{terminal-digit-analysis}
 
 The assumption behind this test is that for experiments including
-counts, the last digit of a sample represented by a big number
+counts, the last digit of a measure represented by a large number
 ($>100$) can be expected to be uniformly distributed. On the
 other hand, fabricated data often fail to show such peculiar property.
 The authors use the chi-square test for goodness of fit to demonstrate
 the fraudulent nature of RTS' samples. Our results are very similar to
-the ones in the paper, although not identical possibly due to the minor difference in number of data points as pointed earlier.
+the ones in the paper, although not identical.
+We identified in the small difference in number of data points used, as pointed in Section~\ref{mid-ratio-analysis}, the root of this discrepancy.
 
 \subsubsection{Equal digits analysis}\label{equal-digits-analysis}
 
-This test follows from the assumptions made from the previous one, and the claim is that in case of genuine data, one should see an equal
-pair of terminal digits only in 1/10 of the samples. In this case the
-authors consider only big numbers (\textgreater{}100), to ensure the
-analysis of insignificant digits. In this scenario, however,
+This test follows from the same assumptions made in Section~\ref{terminal-digit-analysis}.
+The claim is that in case of genuine data, one should see a pair of equal terminal digits only in 1/10 of the samples. 
+Also in this case, to make sure to consider only insignificant digits, the
+authors limit their analysis to large numbers (>100). 
+For this experiment, however,
 the authors fail to state what kind of test they have performed (we
-assume again chi-square test for goodness) and how the data was
-pre-processed. This led us to obtain similar, but not identical results.
+assume chi-square test for goodness again) and how the data was
+pre-processed. 
+This assumption led us to obtain similar, but not identical results.
 
 
 
-\subsubsection{Discussion of
-Assumptions}\label{discussion-of-assumptions}
-
-We discuss the assumptions and tests in bullet points, for brevity.
+\subsubsection{Discussion on Methodology}\label{discussion-of-assumptions}
+Here are a few general comments on the methodology adopted by the authors:
 \begin{itemize}
-    \item We felt that the justification for the Poisson assumption for the triplet data was given less importance. And the applicability of the model to the data was also not underlined to a desirable extent. One can possibly think of various reasons and situations where doing so is hard to justify. But, beyond our intuition we didn't investigate the validity in detail.
-    \item Though one can argue that the parameters fitted to suspected data should not be used to test the validity of the data, we agree with the authors that such a practice only lowers the chances of the suspicion, and gives the person in question a benefit of doubt.
-    \item The authors provide a reference for the uniformity of last insignificant digit to a work \cite{mosimann2002terminal}, but fail in explaining why such framework can safely be applied in this context. For instance, there
+    \item We felt that the justification for the Poisson assumption for the triplet data was not very strong. 
+    And the applicability of the model to the data was also not exhaustively discussed. 
+    \item Although one can argue that the parameters fitted to the suspected data should not be used to test the validity of the data, we agree with the authors that such a practice only lowers the chances of the suspicion, and gives the person in question the benefit of doubt.
+    \item The authors provide a reference for the uniformity of last insignificant digit to a work \cite{mosimann2002terminal}, but fail in explaining why such framework can safely be applied in the context they analyze. 
+    For instance, there
     might be some characteristics of the underlying biological process which
-    prevent the last digits to be uniformly distributed. An attempt to
+    prevent the last digits to be uniformly distributed. 
+    An attempt to
     clarify and justify this choice in the current setting would have been
-    beneficial. The authors include here additional data, provided by three
-    external sources (two for Coulter counts and one for Colony counts) which suffered from relatively very low number of data points.
-    Although the authors comment on the number of these additional samples
+    beneficial. 
+    \item The authors include additional data, provided by three
+    external sources (two for Coulter and one for colony counts) which suffered from relatively very low number of data points.
+    Although the authors comment on the size of these additional datasets
     in the Discussion section, we still believe that, in the current
     setting, these additional samples do not help them in making a stronger
     case, but instead can be misleading and definitely added to our confusion.
     \item We reiterate that treating all the other lab
     investigators as a single pool and singling out RTS is not sufficient, since uniformity
-    of the pool doesn't necessarily imply a similar property for each contributors. This is the starting point of our next section.
+    of the pool does not necessarily imply a similar property for each contributors. 
 
 \end{itemize}
 
