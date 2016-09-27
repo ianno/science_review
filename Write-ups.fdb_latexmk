@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex Write-ups"] 1474707114 "Write-ups.aux" "Write-ups.bbl" "Write-ups" 1474918452
+["bibtex Write-ups"] 1474932499 "Write-ups.aux" "Write-ups.bbl" "Write-ups" 1474932501
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "Write-ups.aux" 1474918451 6129 e3e1f580e2af00c421a7328d69326ee7 ""
+  "Write-ups.aux" 1474932500 6047 c413220b489df4e58d7bed4c8b4dd8e6 ""
   "Write-ups.bcf" 0 -1 0 ""
   "biblio.bib" 1474689056 546 724c593b317ca99430ee2996088b0dd8 ""
   (generated)
   "Write-ups.blg"
   "Write-ups.bbl"
-["pdflatex"] 1474918450 "Write-ups.tex" "Write-ups.pdf" "Write-ups" 1474918452
-  "./Write-ups.out" 1474918451 1456 491274203cf489ef3bb4981caae0ecf8 ""
+["pdflatex"] 1474932499 "Write-ups.tex" "Write-ups.pdf" "Write-ups" 1474932501
+  "./Write-ups.out" 1474932500 1456 491274203cf489ef3bb4981caae0ecf8 ""
   "./images/HT_Stat_values.png" 1474668693 64556 ec34050092a946dd39a12516dea143a5 ""
   "./images/Lambda_Coulter.png" 1474610204 41052 e20e3448e7d76d317d11e8509ffc6a12 ""
   "./images/mid_ratio_perm.png" 1474589986 29805 3f6428044bf5cddb8e21c43adeb25489 ""
@@ -119,6 +119,7 @@
   "/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def" 1306616590 55368 3c8a0d99822330f2dfabc0dfb09ce897 ""
   "/usr/local/texlive/2015/texmf-dist/tex/latex/tools/enumerate.sty" 1428932888 3467 e23880ed1af32024be116b861a72d6e1 ""
   "/usr/local/texlive/2015/texmf-dist/tex/latex/tools/longtable.sty" 1428932888 12083 b47235b9e530708f74984b3dda65e60d ""
+  "/usr/local/texlive/2015/texmf-dist/tex/latex/ucs/data/uni-32.def" 1368571634 8033 ee5a06eead35a732222f876800c8f10f ""
   "/usr/local/texlive/2015/texmf-dist/tex/latex/ucs/data/uni-global.def" 1368571634 1375 8a855db83af5d6753ccbbd32e6a8a901 ""
   "/usr/local/texlive/2015/texmf-dist/tex/latex/ucs/ucs.sty" 1368571634 27982 5723d81d568db410592a59b85fb3eaae ""
   "/usr/local/texlive/2015/texmf-dist/tex/latex/ucs/ucsencs.def" 1368571634 22368 c53c9d0d16c65bef2b157515c9d9f658 ""
@@ -130,10 +131,10 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "Write-ups.aux" 1474918451 6129 e3e1f580e2af00c421a7328d69326ee7 ""
-  "Write-ups.bbl" 1474707114 487 f4bbde57af5c1ad78f4e082980029934 "bibtex Write-ups"
-  "Write-ups.out" 1474918451 1456 491274203cf489ef3bb4981caae0ecf8 ""
-  "Write-ups.tex" 1474918444 41974 0767b99741e76bf89c6957a217214885 ""
+  "Write-ups.aux" 1474932500 6047 c413220b489df4e58d7bed4c8b4dd8e6 ""
+  "Write-ups.bbl" 1474932499 327 70eba54d6163dc0a449ecfd6344f57bc "bibtex Write-ups"
+  "Write-ups.out" 1474932500 1456 491274203cf489ef3bb4981caae0ecf8 ""
+  "Write-ups.tex" 1474932452 39810 2a3f7efacdc78de472557978ba82c749 ""
   "images/HT_Stat_values.png" 1474668693 64556 ec34050092a946dd39a12516dea143a5 ""
   "images/Lambda_Coulter.png" 1474610204 41052 e20e3448e7d76d317d11e8509ffc6a12 ""
   "images/mid_ratio_perm.png" 1474589986 29805 3f6428044bf5cddb8e21c43adeb25489 ""
@@ -143,7 +144,7 @@
   "images/raaz_eq_perm_summary.png" 1474677031 58479 01d11541be0ff6dc3c4b619a6a4cc9ec ""
   "images/raaz_term_chi_summary.png" 1474706709 61791 0fb81ae7cd44076dd0b64fd8b11f2279 ""
   (generated)
-  "Write-ups.log"
-  "Write-ups.out"
-  "Write-ups.pdf"
   "Write-ups.aux"
+  "Write-ups.out"
+  "Write-ups.log"
+  "Write-ups.pdf"

@@ -3,46 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: Write-ups.aux
 The style file: apalike.bst
 Database file #1: biblio.bib
-Warning--empty journal in pitt2016statistical
-You've used 2 entries,
+You've used 1 entry,
             1935 wiz_defined-function locations,
-            484 strings with 4041 characters,
-and the built_in function-call counts, 764 in all, are:
-= -- 71
-> -- 36
-< -- 1
-+ -- 12
-- -- 12
-* -- 67
-:= -- 141
-add.period$ -- 5
-call.type$ -- 2
-change.case$ -- 16
-chr.to.int$ -- 2
-cite$ -- 3
-duplicate$ -- 27
-empty$ -- 49
-format.name$ -- 16
-if$ -- 141
+            479 strings with 3908 characters,
+and the built_in function-call counts, 459 in all, are:
+= -- 43
+> -- 23
+< -- 0
++ -- 8
+- -- 8
+* -- 43
+:= -- 85
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 9
+chr.to.int$ -- 1
+cite$ -- 1
+duplicate$ -- 14
+empty$ -- 29
+format.name$ -- 9
+if$ -- 84
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 2
-newline$ -- 12
-num.names$ -- 6
-pop$ -- 15
+missing$ -- 1
+newline$ -- 8
+num.names$ -- 3
+pop$ -- 7
 preamble$ -- 1
-purify$ -- 16
+purify$ -- 9
 quote$ -- 0
-skip$ -- 22
+skip$ -- 11
 stack$ -- 0
-substring$ -- 43
+substring$ -- 31
 swap$ -- 1
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
-warning$ -- 1
-while$ -- 6
+type$ -- 6
+warning$ -- 0
+while$ -- 4
 width$ -- 0
-write$ -- 25
-(There was 1 warning)
+write$ -- 15

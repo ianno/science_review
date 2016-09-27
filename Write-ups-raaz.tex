@@ -115,7 +115,9 @@
     \def\lt{<}
     % Document parameters
     \title{Review of Statistical Analysis of Numerical Preclinical Radio-biological Data}
-    \author{Raaz Dwivedi,  Antonio Iannopollo and Jiancong Chen}
+    \author{Raaz Dwivedi$^+$,  Antonio Iannopollo$^+$ and Jiancong Chen$^*$ \\
+    $^+$ Dept of EECS, $^*$ Dept of Civil \& Environmental Engineering \\
+    University of California, Berkeley}
     
     
     
@@ -250,17 +252,13 @@
 
 
 \begin{abstract}
-This review is a term
-project for the Graduate Level Course on Statistical Modeling and
-Practices at University of California Berkeley. The authors are graduate
-students from department of EECS and Civil\&Environmental Engineering
-and have restricted their attention to the methods and analysis done in
-the paper. The review is an attempt to reproduce the tests and results
-presented in the paper, and discuss some other non-parametric tests and
-results eg. Permutation tests, that can be seen as an alternative to
-making certain assumptions and finding surprises in the data. No attempt
-has been made to look into the biological aspects and validity of
-certain assumptions related to them. We did not search the literature for other methods for fraud detection. We do believe that permutation tests have promise, as demonstrated by calculations we present. 
+This review reproduces tests and results
+presented by Pitt and Hill and discusses some other non-parametric techniques, such as Permutation Tests, which allow to analyze data with less restrictive assumptions.
+The focus of the review is on the statistical methodology rather than the underlying biological aspects and assumptions of the original work, which are not discussed.
+Although not expert in statistical methods for fraud detection, we do believe that permutation tests are promising in this context, as demonstrated by the results presented here.
+This review has been developed as a term
+project for a Graduate Level Course on Statistical Models at University of California Berkeley, by graduate
+students from EECS and Civil \& Environmental Engineering departments.
 \end{abstract}
 
 \section{Introduction} % (fold)
@@ -270,63 +268,80 @@ certain assumptions related to them. We did not search the literature for other 
 
 We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss other methods to identify anomalies, and present results based on our analysis using Permutation Tests. Permutation tests are consistent with the aim of the paper--providing simple tools to detect anomalies--and validate the results in the paper, leading to the same conclusions.
 
-We offer a minor suggestion: we would have found the paper easier to read if the sections and subsections had been numbered; reorganization of some of the material would have helped, too. Next, we discuss the problem set up considered by the authors, and make some remarks on the methods used. In Section~\ref{reproducibility-of-results} we replicate authors' work and results to some extent. 
-In Section~\ref{our-analysis}, TODO rewrite:we discuss some gaps as a reader and attempt to take a step back and do some tests, and point the gaps in the work and how to address them using statistical methods. 
-We conclude with some remarks in Section~\ref{conclusion}.
+Before diving into technical details, we make a minor observation: the organization of the paper was not properly introduced. The use of distinct sections for - (1) the discussion on data and experiments; (2) their model and related calculations; (3) the application of common tests from the literature and (4) conclusions - would have been helpful. The review is organized as follows. In section~\ref{reproducibility-of-results} we replicate authors' work and results.
+In section~\ref{our-analysis}, we analyze weaknesses of the approach followed in the paper and propose additional techniques to consolidate the results.
+We finally draw our conclusions in section~\ref{conclusion}.
+
 
 \subsection{Problem Set Up}\label{problem-set-up}
 
 The paper begins by voicing a growing concern towards ``Scientific fraud
 and Plagiarism'' in the scientific community and is successful in
-sending a strong message. The authors present some statistical figures and point the existence of easy statistical tools to detect fabricated data and ignorance about the tools. 
+conveying a strong message.
+The authors present some statistical figures and point out the existence of easy statistical tools to detect fabricated data and ignorance about such tools.
 
-The authors examine patterns in radio-biological data. They find that data reported by one of 10 researchers, the ``RTS'', is suspicious. 
-They perform three different
-tests to validate their suspicion and also validate their tests and
-assumptions by looking at the data obtained from three other sources.
+The authors examine datsets from radio-biological experiments. They find that data reported by one of 10 researchers, the ``RTS'', is suspicious.
+They perform three different tests to validate their suspicion and also validate their tests and assumptions by looking at the data obtained from three other sources.
 
-Each researcher made two types of triplicate measurements - colony counts and Coulter counts.  
-The authors suspect that the RTS fabricated data triples to get the mean s/he desired in each triple by setting one observation equal to the desired mean and the other two equal distances above and below that value. This would result in triples that contain the (rounded) mean as one of the values.
+Each researcher made two types of triple measurements - colony counts and Coulter counts.
+The authors suspect that the RTS fabricated data triples to get the mean s/he desired in each triple by setting one observation equal to the desired mean and the other two roughly equidistant above and below that value.
+This would result in triples that contain the (rounded) mean as one of their values.
 
-The methodological contribution of the paper is “bounds and estimates for the probability that a given set of $n$ such triplicates contains $k$ or more triples which contain their own mean” when each of the $n$ triples is independent and identically distributed (IID) Poisson, and triples are independent of each other. (Different triples may have different Poisson rates.)
-For this Poisson model, the chance that the RTS's data would contain so many triples that include their mean is astronomically low.
+The methodological contribution of the paper is “bounds and estimates for the probability that a given set of $n$ such triples contains $k$ or more triples which contain their own mean” when each of the $n$ triples is independent and identically distributed (i.i.d.) Poisson, and triples are independent of each other.
+(Different triples may have different Poisson means.)
+For this Poisson model, the chance that the RTS's data would contain so many triples that include their rounded mean is astronomically low.
 They also apply more common tests for anomalous data, based on statistics such as the frequency of the terminal digit and the frequency with which the last two digits are equal.
 
 However, some of the questions that were slightly untouched upon are discussed below:
 
 \begin{itemize}
 \item
-  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal p-values are likely to be misleadingly small.
+  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal $p$-values are likely to be misleadingly small.
+
 \item
-  Most of the tests compare the RTS data to what would be expected for a model of the observations, then validate the test by comparing data pooled for the other researchers to the model. Pooling the data in this way may hide anomalies in the other researchers' data. Permutation tests allow the data for the RTS to be compared to the data for the other researchers (and to compare each researcher's data with that of the group) without positing a model for how the data were generated. On the other hand, the bulk of the data available are for the RTS, so to reject the hypothesis that another researcher's data looks like a random sample from the pooled data--if it includes the RTS's data--primarily shows that that researcher's data is not like that of the RTS, not that they are suspicious. See section~\ref{our-analysis} of this review for more discussion.
+  Most of the tests assume a model for the observations and compare the RTS's data to that model.
+  The authors validate the assumptions of the model by comparing it with the data pooled for the other researchers.
+  Pooling the data in this way may hide anomalies in the other researchers' data.
+  Permutation tests allow the data from each researcher to be compared to the data from the other researchers without positing a generative model for the data.
+  On the other hand, the bulk of the data available is from the RTS.
+  To reject the hypothesis that another researcher's data looks like a random sample from the pooled data, if it includes the RTS's data, does not imply s/he is suspicious.
+  Instead, it shows that his/her data is not like that of the RTS.
+  See section~\ref{our-analysis} of this review for more discussion.
 \end{itemize}
 
     \section{Reproducibility of Results}\label{reproducibility-of-results}
 
-This section discusses our attempts to replicate the analyses in the paper. 
-After some trial and error and fine tuning we were able to replicate most of
-their results, obtaining similar results in the other cases. All our
-results and code are available at \hyperlink{https://github.com/ianno/stat215a_project1}{github}[github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
+This section discusses our efforts to replicate the analyses in the paper.
+After fine tuning, we were able to replicate most of
+their results, obtaining similar results in the other cases.
+Our work is available on \hyperlink{https://github.com/ianno/stat215a_project1}{github} [github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
 
 
     \subsection{Mid-Ratio Analysis}\label{mid-ratio-analysis}
 
-The authors first consider the mid-ratio, which is defined for a triplet \((a, b, c), a<b<c\) as
-\(\frac{b-a}{c-a}\), and show that the abnormal concentration of histogram for RTS data \(0.4-0.6\) range, 
-compared to everyone else put
-together. With some fine tuning on numpy, we were able to obtain histogram plots similar to the ones reported in Figure (1) of the paper. Two noticeable differences were - (1) We obtain $44\%$ chance of seeing mid-ratio in $(0.4, 0.5]$ for RTS, compared to $50\%$ chance reported in paper. (2) We used 1360/1361 and 595/595 triplets to compute histogram for RTS and the rest (nine other researchers of the same lab) respectively, compared to the use of 1343/1361 and 571/595 triplets by the authors. We removed one triplet that had all equal values.
+The authors first consider the mid-ratio, which is defined for a triple \((a, b, c), a<b<c\) as
+\(\frac{b-a}{c-a}\), and show that the histogram of RTS's data concentrates
+abnormally around the \(0.4-0.6\) range, compared to the data taken by all the other lab members.
+After tweaking the default histogram function on numpy, we were able to obtain plots similar to the ones reported in Figure (1) of the paper. Two noticeable differences were - (1) we obtain $44\%$ chance of seeing mid-ratio in $(0.4, 0.5]$ interval for RTS, compared to $50\%$ chance reported in the paper and (2) we used 1360/1361 and 595/595 triples to compute histogram for RTS and the rest respectively, compared to the use of 1343/1361 and 572/595 triples by the authors.
+We believe the authors did not provide enough information about the methods used to filter data for this section. However, such minor differences did not demand further investigation.
 
     \subsection{Probability Model}\label{probability-model}
 
-Next, the authors develop a model to bound the probability of observing $k$ out of $n$ triplets contain their mean.
-Each entry in a triplet is assumed to be an independent sample from a Poisson distribution with mean $\lambda$. (Different triplets may have different means.) The event of observing the rounded mean in such a triplet is a Bernoulli random variable (BRV) whose success probability depends on $\lambda$. Assuming triplets to be independent of each other, the authors derive analytical expressions for the desired bounds in Appendix A, which we didn't check very carefully. The authors tabulate numerical values of these bounds for $\lambda=\{1, \ldots, 25\}$ in Table 1. We could replicate this table exactly.  For larger values of $\lambda$ authors mention few representative probability values. However, our simple implementations didn't work for those cases due to division and multiplication involving huge  factorial terms.
+The authors develop a model to bound the probability of observing $k$ out of $n$ triples contain their mean.
+Each entry in a triple is assumed to be an independent sample from a Poisson distribution with mean $\lambda$. (Different triples may have different means.)
+The event of observing the rounded mean in such a triple is a Bernoulli random variable (BRV) whose success probability depends on $\lambda$.
+The authors derive analytical expressions for these success probabilities in Appendix A.
+Numerical values of these probabilities, for $\lambda=\{1, \ldots, 25\}$, are presented in Table 1.
+We could replicate this table exactly.
+For large $\lambda\ (>2000)$, for which the authors provide only few representative probability values, our implementation suffered from numerical issues.
 
-Using Table 1, the authors determine the success probability for the BRV in two different ways. First, they used the maximum value from Table 1 as an upper bound for all triplets, essentially treating all BRVs as independent and identically distributed Bernoulli($0.42$). Secondly, they use maximum likelihood estimate of $\lambda$ for each triplet to look-up Table 1, essentially treating each BRV to have a different success probability.
+Using Table 1, the authors determine the success probability for the BRV in two different ways and use it to compute the chance of observing the data.  For hypothesis test I (non-parametric) they used the maximum value from Table 1 as an upper bound for all triples, essentially treating all BRVs as i.i.d. Bernoulli($0.42$). Replicating this was straightforward.
 
-    \subsubsection{Using $\lambda$ to obtain
-p-values}\label{using-lambda-to-obtain-p-values}
+For hypothesis test II and III, the authors use maximum likelihood estimate of $\lambda$ for each triple to compute values, essentially treating each BRV to have a different success probability. We discuss this in the next section.
 
-Next, the authors use the model and the values obtained from previous sections to compute the chance of observing the data. We could replicate the chance values up to minor errors for the colony data. Limitations of our implementation gave wrong results for Coulter data. For sanity checks of the results, we used linearly interpolated values from the paper (for intermediate $\lambda$) and obtained values similar to those in the paper. Figure~\ref{table2} is the approximate replication of Table 2 from the paper.
+    \subsubsection{Hypothesis Test II and III}\label{using-lambda-to-obtain-p-values}
+
+We could replicate the chance values up to minor errors for the colony data. Limitations of our implementation gave wrong results for Coulter data. For sanity checks of the results, we used linearly interpolated values from the paper (for intermediate $\lambda$) and obtained values similar to those in the paper for these tests. Figure~\ref{table2} is the approximate replication of Table 2 from the paper.
 
 \begin{figure}[H]
 \centering
