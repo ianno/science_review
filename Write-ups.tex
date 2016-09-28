@@ -115,7 +115,9 @@
     \def\lt{<}
     % Document parameters
     \title{Review of Statistical Analysis of Numerical Preclinical Radio-biological Data}
-    \author{Raaz Dwivedi,  Antonio Iannopollo and Jiancong Chen}
+    \author{Raaz Dwivedi$^+$,  Antonio Iannopollo$^+$ and Jiancong Chen$^*$ \\
+    $^+$Department of EECS, $^*$Department of Civil \& Environmental Engineering \\
+    University of California, Berkeley}
     
     
     
@@ -250,17 +252,12 @@
 
 
 \begin{abstract}
-This review is a term
-project for the Graduate Level Course on Statistical Modeling and
-Practices at University of California Berkeley. The authors are graduate
-students from department of EECS and Civil\&Environmental Engineering
-and have restricted their attention to the methods and analysis done in
-the paper. The review is an attempt to reproduce the tests and results
-presented in the paper, and discuss some other non-parametric tests and
-results eg. Permutation tests, that can be seen as an alternative to
-making certain assumptions and finding surprises in the data. No attempt
-has been made to look into the biological aspects and validity of
-certain assumptions related to them. We did not search the literature for other methods for fraud detection. We do believe that permutation tests have promise, as demonstrated by calculations we present. 
+This review reproduces tests and results
+presented by Pitt and Hill and discusses some other non-parametric techniques, such as Permutation Tests, which allow to analyze data with less restrictive assumptions.
+The focus of the review is on the statistical methodology rather than the underlying biological aspects and assumptions of the original work, which are not discussed.
+Although not expert in statistical methods for fraud detection, we do believe that permutation tests are promising in this context, as demonstrated by the results presented here.
+This review has been developed as a term
+project for a Graduate Level Course on Statistical Models at UC Berkeley.
 \end{abstract}
 
 \section{Introduction} % (fold)
@@ -270,373 +267,277 @@ certain assumptions related to them. We did not search the literature for other 
 
 We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss other methods to identify anomalies, and present results based on our analysis using Permutation Tests. Permutation tests are consistent with the aim of the paper--providing simple tools to detect anomalies--and validate the results in the paper, leading to the same conclusions.
 
-We offer a minor suggestion: we would have found the paper easier to read if the sections and subsections had been numbered; reorganization of some of the material would have helped, too. Next, we discuss the problem set up considered by the authors, and make some remarks on the methods used. In Section~\ref{reproducibility-of-results} we replicate authors' work and results to some extent. 
-In Section~\ref{our-analysis}, TODO rewrite:we discuss some gaps as a reader and attempt to take a step back and do some tests, and point the gaps in the work and how to address them using statistical methods. 
-We conclude with some remarks in Section~\ref{conclusion}.
+Before diving into technical details, we make a minor observation: the organization of the paper was not properly introduced. The use of distinct sections for - (1) the discussion on data and experiments; (2) their model and related calculations; (3) the application of common tests from the literature and (4) conclusions - would have been helpful. The review is organized as follows. In section~\ref{reproducibility-of-results} we replicate authors' work and results.
+In section~\ref{our-analysis}, we analyze weaknesses of the approach followed in the paper and propose additional techniques to consolidate the results.
+We finally draw our conclusions in section~\ref{conclusion}.
+
 
 \subsection{Problem Set Up}\label{problem-set-up}
 
 The paper begins by voicing a growing concern towards ``Scientific fraud
 and Plagiarism'' in the scientific community and is successful in
-sending a strong message. The authors present some statistical figures and point the existence of easy statistical tools to detect fabricated data and ignorance about the tools. 
+conveying a strong message.
+The authors present some statistical figures and point out the existence of easy statistical tools to detect fabricated data and ignorance about such tools.
 
-The authors examine patterns in radio-biological data. They find that data reported by one of 10 researchers, the "RTS," is suspicious. 
-They perform three different
-tests to validate their suspicion and also validate their tests and
-assumptions by looking at the data obtained from three other sources.
+The authors examine datsets from radio-biological experiments. They find that data reported by one of 10 researchers, the ``RTS'', is suspicious.
+They perform three different tests to validate their suspicion and also validate their tests and assumptions by looking at the data obtained from three other sources.
 
-Each researcher made two types of triplicate measurements - colony counts and Coulter counts.  
-The authors suspect that the RTS fabricated data triples to get the mean s/he desired in each triple by setting one observation equal to the desired mean and the other two equal distances above and below that value. This would result in triples that contain the (rounded) mean as one of the values.
+Each researcher made two types of triple measurements - colony counts and Coulter counts.
+The authors suspect that the RTS fabricated data triples to get the mean s/he desired in each triple by setting one observation equal to the desired mean and the other two roughly equidistant above and below that value.
+This would result in triples that contain the (rounded) mean as one of their values.
 
-The methodological contribution of the paper is “bounds and estimates for the probability that a given set of n such triplicates contains k or more triples which contain their own mean” when each of the $n$ triples is independent and identically distributed (IID) Poisson, and triples are independent of each other. (Different triples may have different Poisson rates.)
-For this Poisson model, the chance that the RTS's data would contain so many triples that include their mean is astronomically low.
+The methodological contribution of the paper is “bounds and estimates for the probability that a given set of $n$ such triples contains $k$ or more triples which contain their own mean” when each of the $n$ triples is independent and identically distributed (i.i.d.) Poisson, and triples are independent of each other.
+(Different triples may have different Poisson means.)
+For this Poisson model, the chance that the RTS's data would contain so many triples that include their rounded mean is astronomically low.
 They also apply more common tests for anomalous data, based on statistics such as the frequency of the terminal digit and the frequency with which the last two digits are equal.
 
 However, some of the questions that were slightly untouched upon are discussed below:
 
 \begin{itemize}
 \item
-  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal p-values are likely to be misleadingly small.
+  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal $p$-values are likely to be misleadingly small.
+
 \item
-  Most of the tests compare the RTS data to what would be expected for a model of the observations, then validate the test by comparing data pooled for the other researchers to the model. Pooling the data in this way may hide anomalies in the other researchers' data. Permutation tests allow the data for the RTS to be compared to the data for the other researchers (and to compare each researcher's data with that of the group) without positing a model for how the data were generated. On the other hand, the bulk of the data available are for the RTS, so to reject the hypothesis that another researcher's data looks like a random sample from the pooled data--if it includes the RTS's data--primarily shows that that researcher's data is not like that of the RTS, not that they are suspicious. See section~\ref{our-analysis} of this review for more discussion.
+  Most of the tests assume a model for the observations and compare the RTS's data to that model.
+  The authors validate the assumptions of the model by comparing it with the data pooled for the other researchers.
+  Pooling the data in this way may hide anomalies in the other researchers' data.
+  Permutation tests allow the data from each researcher to be compared to the data from the other researchers without positing a generative model for the data.
+  On the other hand, the bulk of the data available is from the RTS.
+  To reject the hypothesis that another researcher's data looks like a random sample from the pooled data, if it includes the RTS's data, does not imply s/he is suspicious.
+  Instead, it shows that his/her data is not like that of the RTS.
+  See section~\ref{our-analysis} of this review for more discussion.
 \end{itemize}
 
     \section{Reproducibility of Results}\label{reproducibility-of-results}
 
-This section discusses our attempts to replicate the analyses in the paper. 
-After some trial and error and fine tuning we were able to replicate most of
-their results, obtaining similar results in the other cases. All our
-results and code are available at \hyperlink{https://github.com/ianno/stat215a_project1}{github}[github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
+This section discusses our efforts to replicate the analyses in the paper.
+After fine tuning, we were able to replicate most of
+their results, obtaining similar results in the other cases.
+Our work is available on \hyperlink{https://github.com/ianno/stat215a_project1}{github} [github.com/ianno/stat215a\_project1]. We first discuss specifics about the replication and then comment about the tests and methods involved.
 
 
     \subsection{Mid-Ratio Analysis}\label{mid-ratio-analysis}
 
-The authors first consider the mid-ratio, which is defined for a triplet \((a, b, c), a<b<c\) as
-\(\frac{b-a}{c-a}\), and show that the histogram of RTS concentrates
-abnormally around \(0.4-0.6\) range, compared to everyone else put
-together. We tried to reproduce the histogram in python using the
-numpy's histogram plots (and in an early test also using Matlab) and it
-looked very different. Then, we tweaked the histogram to include the
-right edge of the bins and it looked very similar to the Figure(1) of
-the paper. But the histogram still had differences, for instance, the
-authors get very close to 50\% chance of obtaining a mid-ratio of
-0.4-0.5, while we get close to 44\% chance. Also, we used 1361 values
-for computing the histogram after removing the triplets with missing
-values (in fact, 1360 because one triplet had all equal values) while
-the authors used 1343/1361 and provided no justification for the same.
-Similarly, we had 595 triplets to plot the histogram for the rest of the
-researchers (of the same lab). However, our plots can be categorized
-very similar to theirs after the bin adjustment, and we categorized
-these differences too minor for investment of more time.
+The authors first consider the mid-ratio, which is defined for a triple \((a, b, c), a<b<c\) as
+\(\frac{b-a}{c-a}\), and show that the histogram of RTS's data concentrates
+abnormally around the \(0.4-0.6\) range, compared to the data taken by all the other lab members.
+After tweaking the default histogram function on numpy, we were able to obtain plots similar to the ones reported in Figure (1) of the paper. Two noticeable differences were - (1) we obtain $44\%$ chance of seeing mid-ratio in $(0.4, 0.5]$ interval for RTS, compared to $50\%$ chance reported in the paper and (2) we used 1360/1361 and 595/595 triples to compute histogram for RTS and the rest respectively, compared to the use of 1343/1361 and 572/595 triples by the authors.
+We believe the authors did not provide enough information about the methods used to filter data for this section. However, such minor differences did not demand further investigation.
 
-    \subsection{Probability Model}\label{probability-model}
+    \subsection{Probability Model and Hypothesis Tests}\label{probability-model}
 
-In this section, we followed the equations provided by the authors in
-Appendix A to calculate the probability - $\lambda$ table. Here, first they model each triplet of observations as a three identically independent distributed (i.i.d.) Poisson random variables with mean $\lambda$ (which could differ from triplet to triplet). Next they model the occurrence of mean (rounded off) in such a triplet as a Bernoulli random variable whose success probability is tabulated in Table 1 as a function of $\lambda$. They provided analytical expressions in the Appendix (which looked fine at a glance) to compute this table. We could
-replicate Table 1 from the paper and the trends in the values as a function of $\lambda$. However for large $\lambda$ for couple of implementations we got $0$ value, in place of very small values for the probabilities, and we didn't improve our implementation.
+The authors develop a model to bound the probability of observing $k$ out of $n$ triples contain their mean.
+Each entry in a triple is assumed to be an independent sample from a Poisson distribution with mean $\lambda$. (Different triples may have different means.)
+The event of observing the rounded mean in such a triple is a Bernoulli random variable (BRV) whose success probability depends on $\lambda$.
+The authors derive analytical expressions for these success probabilities in Appendix A.
+Numerical values of these probabilities, for $\lambda=\{1, \ldots, 25\}$, are presented in Table 1.
+We could replicate this table exactly.
+For large $\lambda\ (>2000)$, for which the authors provide only few representative probability values, our implementation suffered from numerical issues.
 
-The authors used the Table 1 in two ways to choose the probability for the Bernoulli random variables. First, they used the maximum value from Table 1 as a uniform parameter for all triplets, essentially treating all triplet as i.i.d. Bernoulli($0.42$), and in the second set of results, they used the Maximum Likelihood estimate (sample mean in this case) for each triplet to find the probability of success value in the table thereby treating each triplet having a different probability of success.
+Using Table 1, the authors determine the success probability for the BRV in two different ways and use it to compute the chance of observing the data.  For hypothesis test I (non-parametric) they used the maximum value from Table 1 as an upper bound for all triples, essentially treating all BRVs as i.i.d. Bernoulli($0.42$). Replicating this was straightforward.
 
-    \subsubsection{Using $\lambda$ to obtain
-p-values}\label{using-lambda-to-obtain-p-values}
-
-In this section, the researchers used their probability model calculations to compute the chance of observing the data. While replicating,
-it worked fine for us with the colony data as the mean of the counts $<100$, and we were able to replicate their computations to minor errors. However, when we conducted the same experiments for Coulter data, due to the limitation of our implementations, we could barely come up with a reasonable probability value as the mean value of counts were a lot larger, and thus we could not replicate the values for the Coulter. We tried a regression based on the statement from the
-literature that when $\lambda = 100$ we use probability $<0.14$, and for $\lambda = 2000$ we use probability $= 0.032$. However the take away message is hardly unaffected, and these section were not the focus of our review. For completeness we mention the interpolated probabilities for Coulter Data used for computing statistics as in Table 2 of the original paper:
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\linewidth]{images/Lambda_Coulter.png}
-\caption{Approximate $p$-values for Coulter Data}
-\end{figure}
+For hypothesis test II and III, the authors use maximum likelihood estimate of $\lambda$ for each triple to compute the corresponding success probability values, essentially treating each BRV to have a different distribution. The authors address the sum of these BRVs as a ``Poisson Binomial Random Variable".
+Additionally, for the hypothesis test III, the authors use normal approximation for the Poisson binomial random variables. 
+We could replicate the probability values, up to minor errors, for the colony data. 
+Limitations of our implementation gave inaccurate results for Coulter data. 
+For sanity checks of the results, we used linearly interpolated estimates from the paper (for intermediate $\lambda$) and obtained values similar to those in the paper for these tests. Figure~\ref{table2} is the approximate replication of Table 2 from the paper.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\linewidth]{images/HT_Stat_values.png}
 \caption{Approximate Replication of Table 2}
+\label{table2}
 \end{figure}
 
     \subsection{Digits Analysis}\label{digits-analysis}
 
-To find additional confirmations on the suspect of fabricated data, the
-authors perform two additional tests, namely \textit{terminal
-digit analysis} and \textit{pair of equal terminal digits analysis}. Both
-such analyses are based on existing work (and intuition) that the least significant digit of a sample is, in general, not very informative, i.e.~it is reasonable to expect it to be uniformly distributed random variable.
+The authors also perform some common tests for fraud detection - \textit{terminal
+digit analysis} and \textit{pair of equal terminal digits analysis}. These tests
+are based on the assumption that, in general, insignificant digits of a random sample are uniformly distributed.
+
+\subsubsection{Terminal Digit Analysis}\label{terminal-digit-analysis}
+
+The first test assumes that the last digit in samples of large numbers
+($>100$) should empirically show uniform distribution. 
+Also, some previous works, e.g. \cite{mosimann2002terminal},
+have shown that fabricated data often fails to show such peculiar property.
+The authors use the chi-square test for goodness of fit, and get low $p$-values for the RTS's data, and good fits for
+the data of other researchers.
+Our results are very similar to theirs, although not identical.
+
+\subsubsection{Equal Digits Analysis}\label{equal-digits-analysis}
+
+This test assumes that, for large numbers, empirical frequencies of observations of a
+pair of equal terminal digits should be close to $1/10$. 
+The authors did not mention which tests were considered for this analysis.
+We assume they performed chi-square tests for goodness of fit, for which we obtain similar results.
 
 
 
-\subsubsection{Terminal digit analysis}\label{terminal-digit-analysis}
+\subsection{Discussion}\label{discussion-of-assumptions}
 
-The assumption behind this test is that for experiments including
-counts, the last digit of a sample represented by a big number
-($>100$) can be expected to be uniformly distributed. On the
-other hand, fabricated data often fail to show such peculiar property.
-The authors use the chi-square test for goodness of fit to demonstrate
-the fraudulent nature of RTS' samples. Our results are very similar to
-the ones in the paper, although not identical possibly due to the minor difference in number of data points as pointed earlier.
-
-\subsubsection{Equal digits analysis}\label{equal-digits-analysis}
-
-This test follows from the assumptions made from the previous one, and the claim is that in case of genuine data, one should see an equal
-pair of terminal digits only in 1/10 of the samples. In this case the
-authors consider only big numbers (\textgreater{}100), to ensure the
-analysis of insignificant digits. In this scenario, however,
-the authors fail to state what kind of test they have performed (we
-assume again chi-square test for goodness) and how the data was
-pre-processed. This led us to obtain similar, but not identical results.
-
-
-
-\subsubsection{Discussion of
-Assumptions}\label{discussion-of-assumptions}
-
-We discuss the assumptions and tests in bullet points, for brevity.
+Here are a few general comments on the methodology adopted by the authors:
 \begin{itemize}
-    \item We felt that the justification for the Poisson assumption for the triplet data was given less importance. And the applicability of the model to the data was also not underlined to a desirable extent. One can possibly think of various reasons and situations where doing so is hard to justify. But, beyond our intuition we didn't investigate the validity in detail.
-    \item Though one can argue that the parameters fitted to suspected data should not be used to test the validity of the data, we agree with the authors that such a practice only lowers the chances of the suspicion, and gives the person in question a benefit of doubt.
-    \item The authors provide a reference for the uniformity of last insignificant digit to a work \cite{mosimann2002terminal}, but fail in explaining why such framework can safely be applied in this context. For instance, there
-    might be some characteristics of the underlying biological process which
-    prevent the last digits to be uniformly distributed. An attempt to
-    clarify and justify this choice in the current setting would have been
-    beneficial. The authors include here additional data, provided by three
-    external sources (two for Coulter counts and one for Colony counts) which suffered from relatively very low number of data points.
-    Although the authors comment on the number of these additional samples
-    in the Discussion section, we still believe that, in the current
-    setting, these additional samples do not help them in making a stronger
-    case, but instead can be misleading and definitely added to our confusion.
-    \item We reiterate that treating all the other lab
-    investigators as a single pool and singling out RTS is not sufficient, since uniformity
-    of the pool doesn't necessarily imply a similar property for each contributors. This is the starting point of our next section.
+    \item The authors did not justify the assumption of Poisson distribution for the underlying radio-biological data. We think a more thorough explanation would have been helpful for readers with different backgrounds.
+    \item The authors suspected RTS's data, but used his/her data to fit a model and quantify their suspicion. While sometimes this may raise concerns, here we agree with the authors that doing so increases the odds in favor of the RTS, hence giving us desirable conservative results.
+    \item The authors do not discuss why considering only numbers larger than 100 justifies the assumption of insignificance for the two terminal digits. 
+    \item The authors include additional data from three external sources (two for Coulter counts and one for colony counts).
+    All of them, however, had a relatively small amount of data.
+    Despite the authors' attempts to account for this, we believe that in the current setting these additional samples do not provide more compelling evidence. 
+    Instead, they might be misleading (Are the procedures used the same? Is the equipment calibrated in the same way?, etc.).
+    \item We reiterate that pooling the data may hide anomalies in the other researchers' data.
 
 \end{itemize}
 
 
 
-    \section{Our Analysis}\label{our-analysis}
+    \section{Further Analysis}\label{our-analysis}
 
-    The authors begin by singling out that the histogram of RTS looks anomalous
-compared to the rest of them put together. They assume that one is
-likely to observe uniform distribution for mid-ratio, and this fact is
-validated by the histogram of the 9 researchers put together which looks
-close to uniform. The first question that came to our mind which motivated this section was - how do we single out the
-anomalous researcher if we don't know a priori who he/she is? If we decide on the histogram as the first test, then a simple
-way would be to plot histogram of the mid-ratios for the data
-collected by all researchers individually, and look for anomalous patterns
-across all these plots. For sake of similarity to the authors' set up,
-one will detect anomaly by contrasting each researcher's histogram with
-the histogram of all others put together. Such an experiment gives very
-interesting results and also raises an important issue with this
-approach.
+    As a preliminary test for identifying suspicious datasets, we (1) plot histograms of mid-ratios for the colony data provided by individual researchers, 
+    and (2) contrast the histogram of each investigator with the histogram of the pooled data of the other investigators. 
+    Here, we only include plots for (1). 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{images/new_mid_ratio.png}
 \caption{Individual Histograms for the Colony Data}
+\label{ind_mid_ratio}
 \end{figure}
 
+Two important observations can be made:
 \begin{itemize}
 \item
-  First, the histogram for researchers with labels ``B, C, E, F, G, H, I'' do not
-  seem to be close to uniform as well. In particular, ``B'' and ``C''
-  have a very different histogram when contrasted with the histogram for
-  uniform distribution. They have distinct peaks but around 0.2 and 0.4
-  respectively.
+  The histograms for researchers with labels B, C, E, F, G, H, I do not
+  appear following uniform distribution.
 \item
-  Second, when we try to contrast the individual histogram of researchers
-  with rest of them combined which includes RTS, the new ``rest''
-  histograms are dominated by RTS's data because of the comparatively
-  huge fraction of data collected by RTS, and so most of the other
-  researchers look anomalous when contrasted with it.
+  RTS heavily influences the histogram when his/her data is collected in the pool and, therefore, patterns from the other researchers look anomalous when compared to it.
 \end{itemize}
 
-The previous two remarks point out the limitations on the visual
-comparison of histogram and assumption of ``uniform distribution'' for
-mid ratios. Next we try to present a different viewpoint which has two advantages - it is free of such assumptions, and thus extends to far more general cases where even slight intuition about the data is missing.
+These points illustrate the limitations of the uniformity assumption for
+mid-ratios and the visual comparison between the histograms of RTS and the pool to motivate suspicion. 
 
 
-
-    \subsection{Quick Primer to Permutation
-Tests}\label{quick-primer-to-permutation-tests}
-
-As discussed above, we felt that the justification for
-singling out the particular RTS was incomplete. So, we took a step back,
-and did permutation tests to identify anomalous patterns across different
-researchers. We briefly discuss the test set up and the philosophy of the test.
-
-Given a treatment and control group of size \(T\) and \(C\)
-respectively, we want to test the hypothesis if the treatment has an
-effect on the population. In permutation test, the data pooled together
-is considered as the population (here it will have size \(N = T+C\)).
-Next, one decides on a test statistic that is consistent with our
-hypothesis and is expected to contrast the two set of samples if the
-treatment has any effect. The distribution of test statistic has an
-exact theoretical representation but is often computationally
-intractable. An empirical approximation can be made by randomly
-partitioning the data into groups of \(T\) and \(C\) several times, and
-computing the test statistic contrasting the two datasets. With the
-distribution in hand, we can now test how surprising was the outcome
-that we originally had.
-
-The conclusion that one draws when the p-values are very low is that \textit{the
-two groups are different to each other} than expected had we randomly partitioned
-the pooled dataset, i.e., the labels of the data matters.
+    \subsection{Permutation Tests}\label{quick-primer-to-permutation-tests}
 
 
-    \subsection{Permutation Tests for
+``The problem of determining whether a treatment has an effect is widespread in various real world problems. 
+To evaluate whether a treatment has an effect, it is crucial to compare the outcome when treatment is applied (the outcome for the treatment group) with the outcome when treatment is withheld (the outcome for the control group), in situations that are as alike as possible but for the treatment. This is called the method of comparison.''\cite{philip}. 
+We will describe this method for a specific set up relevant for this review.
+
+Suppose that we are given two sets of observations - one of them labeled as `treatment' with size $T$, and the other labeled as `control', of size $C$. 
+We assume that the first of them has received a treatment and we wish to test the hypothesis whether this treatment affects the group. 
+In a two-sample permutation test, the data is pooled together
+to form a population of size \(N = T+C\).
+To compare the two groups, we need to decide on a test-statistic that can capture the effect of the treatment (if any) on the population. 
+As an example, we can consider the absolute difference between the sample means of the two datasets.
+Under the null hypothesis that the treatment has no effect, one can analytically derive the distribution of this test statistic. 
+However, it is often easier to empirically approximate such distribution rather than compute it numerically. 
+To do so, one needs to repeatedly randomly  partition the data into groups of size \(T\) and \(C\) and compute the test statistic contrasting the two groups. 
+We use the empirical histogram obtained from these experiments, as a proxy for the true distribution of the test statistic. 
+Just like typical hypothesis testing, we then determine the chances ($p$-value) of observing the test statistic that we computed in the beginning.
+
+When the $p$-value is below a preset significance level, we infer that the treatment has an effect at that level of significance. It is unlikely that the two sets  were obtained by a random partition of the pooled data.
+
+
+    \subsubsection{Results for
 Mid-Ratio}\label{permutation-tests-for-mid-ratio}
 
-Because we agree with the remark of the authors that it is easy to tweak
-the data to get a desirable triplet, we decide to set the difference in
-standard deviation of mid-ratios of two datasets. The choice of standard deviation as the first statistic in place of mean
-makes sense because uniformity as well as convenient tweaking will lead
-to the same expectation of 0.5; and we expect standard deviation to capture
+We set the test statistic to be the difference in
+standard deviation of the mid-ratios for the two datasets. 
+We choose the standard deviation, instead of the mean, because our null and alternative hypothesis for mid-ratio (uniform distribution versus concentration around 0.5) have the same mean ($0.5$). 
+We expect the standard deviation to capture
 the \textit{unintentional reduction in spread caused in data due to
 intentional adjustments}.
 
-We consider each researcher equivalent to a treatment. That is, for a
-given researcher, eg. A with dataset \(D_A\) with size \(n_A\), we look
-at test statistic computed for a random partition of the entire data
-(size \(N\)) into two groups \(n_A\) and \(N-n_A\) and compute the test
-statistic. We repeat this experiment 1000 times to plot the empirical
-distribution and then compute the p-values. We obtained $0$ $p$-value for A, B,
-D, and RTS; and \(<0.01\) p-value for all others except E,F,G which
-indicates that almost all datasets are surprising with respect to this
-test-statistic. We would like to note that here $0$ $p$-value means that there is less than $1$ in $1000$ chance of observing the event, because of finite resolution owing to $1000$ tests. We would also like to mention that RTS is still the most surprising if one looks at the location of the test-statistic in the
-tails of the distribution.
+We consider each researcher's data equivalent to a treatment group and the rest of them as the control group. 
+We use 1000 repetitions to obtain the empirical
+distribution and then compute the $p$-values: 
+\begin{itemize} 
+	\item $0.00$, for investigators A, B,
+	D, and RTS;
+	\item \(<0.01\), for C, H, I;
+	\item  \(>0.01\), for  E,F,G.
+\end{itemize}
+ The $p$-values indicate that almost all datasets are surprising with respect to this
+test-statistic. 
+We would like to emphasize that here a $p$-value of $0.00$ in fact denotes a $p$-value $<0.001$, because of the finite resolution owing to $1000$ tests.
+We would also like to mention that RTS is still the most surprising if one looks at the location of the test-statistic in the tails of the distribution.
 
-Next we look at \(\ell_1\) distance between the density, followed by
-\(\ell_1\) distance between the CDF of two samples for each researcher,
-and obtain very similar results as in the previous case, that is several
-researchers will be rejected by the test at significance level of even
-\(1 \%\). We present all these $p$-values in Figure~\ref{mid_ratio_perm}.
+We also use \(\ell_1\)-distance between the density\footnote{abuse of terminology, used in place of normalized histograms}, and the
+\(\ell_1\)-distance between the cumulative distribution function (CDF) as the test statistic. Again, we reject several researchers of the lab at a significance level of \(1 \%\). 
+We present all the $p$-values in Figure~\ref{mid_ratio_perm}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{images/mid_ratio_perm.png}
-\caption{Results for Permutation Tests for Mid Ratios}
+\caption{Results for Permutation Tests for Mid-Ratio}
 \label{mid_ratio_perm}
 \end{figure}
 
-\subsubsection{Limitations of Permutation Test} % (fold)
-\label{ssub:limitations_of_permutation_test}
+{\bf Remark} We would like to mention that when RTS is included in the control group, it constitutes the bulk of the group. As a result, rejecting the null hypothesis for a researcher is almost equivalent to rejecting the hypothesis that the data of that researcher is same as RTS's data. 
+If we already believed or discovered that RTS's data was suspicious, then we cannot flag other researchers' data as suspicious. 
+Therefore, we do another set of permutation tests after excluding the RTS's data. 
+We did not find strong evidence to reject the null hypothesis, hence we conclude that none of the researchers is suspicious at a significance level of $1\%$. 
+However, this set of tests suffer from a bias because of our manual throwing away 2/3 of the data points.
 
-% subsubsection limitations_of_permutation_test (end)
-A concern in such a test is the effect of the huge fraction of the data
-contributed by RTS. The $p$-values indicate the chance of the difference
-between the two groups - treatment and control, so a low $p$-value means
-that the treatment group is likely to be different than the control
-group. And here the control group has a dominant effect from the data
-provided by RTS, hence a heuristic conclusion is that the data of the
-other lab mates is very different than the data of RTS. To be more
-concrete about drawing conclusions about the surprises in data about
-other researchers, we exclude the data provided by RTS to run the
-permutation tests. We will like to note that this has a bias because we
-ignore almost 2/3rd of the data, but doing so does give some answers
-that we were expecting before running these tests, which were consistent with the authors' expectations.
-
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{images/mid_ratio_perm_no_rts.png}
 \caption{Results for Permutation Tests without RTS  for Mid Ratios}
 \end{figure}
 
-Owing to the high $p$-values, now we may say that the data provided by each individual researchers looks like a
-random partitioning when compared to the entire data pooled together
-excluding RTS, which gives some statistical evidence to RTS being the
-odd one out.
+Putting together all the pieces, we conclude that there is statistical evidence to claim that RTS's data is not genuine.
 
     \subsection{Additional Tests for Digit
 Analysis}\label{additional-tests-for-digit-analysis}
 
-For the terminal digit and equal digits tests, we extended the tests provided by
-the authors by considering the individual contribution of the single
-members of the lab and performing
-\begin{itemize}
-    \item chi-square test for goodness of fit
-for each of the lab members and outside labs for terminal digit analysis,
-    \item chi-square test for goodness of fit for each of the lab
-members and outside labs for equal digits analysis and,
-    \item permutation tests for terminal digit analysis considering RTS and the other investigators.
- \end{itemize}
-
-    \subsubsection{Chi-square test Tests for Terminal Digit
-Analysis}\label{chi-square-test-tests-for-terminal-digit-analysis}
-
-To understand how single investigators contributions are distributed
-with respect to RTS and the outside labs, we decided to analyze data
-from all the other investigators taken one by one. To do so, we
-performed the chi-square test for goodness of fit for each of them. The
-following tables summarized our results:
+For the terminal digit and equal digits analyses, we extended the tests done by
+the authors to individual members of the lab and performed (1) chi-square test for goodness of fit for terminal digit, (2) chi-square test for goodness of fit for equal digits and (3) permutation tests for terminal digit. For permutation tests, we used the test statistics listed in the previous section. Results are tabulated in Figures \ref{cst1}, \ref{cst2}, and \ref{perm2}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth]{images/raaz_term_chi_summary.png}
 \caption{Chi Square Tests for Terminal Digits in Coulter and Colony
 Counts}
+\label{cst1}
 \end{figure}
 
-Reading the tables, one can notice that $p$ value for D, for Coulter Data is $<1\%$.
-
-    \subsubsection{Chi-square test Tests for Equal Digits
-Analysis}\label{chi-square-test-tests-for-equal-digits-analysis}
-
-Also for the Equal Digits Analysis we performed the chi-square test for
-goodness of fit using the data of the individual investigators in the
-lab, in a similar fashion as before.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\linewidth]{images/raaz_eq_chi_elaborate.png}
 \caption{Chi Square Tests for Equal Terminal Pair in Coulter and Colony
 Counts}
+\label{cst2}
 \end{figure}
-
-Here none of the $p$-values look abnormally low. One can argue that for $A$ it is very high, but going by the practice of deciding thresholds before seeing the results none of the results are surprising.
-
-    \subsubsection{Permutation Test for Terminal Digit
-Analysis}\label{permutation-test-for-terminal-digit-analysis}
-
-The following tables illustrate the permutation test results using the
-same test statistics as for mid-ratios:
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth]{images/raaz_eq_perm_summary.png}
 \caption{Permutation Tests for Terminal Digit Analysis, Coulter counts}
+\label{perm2}
 \end{figure}
 
-In all the above cases, it is possible to see how RTS data is
-consistently suspicious, which is a confirmation of the authors'
-suspects. And as pointed before, the huge fraction of data contributed
-by RTS contributes towards the low $p$-values for other individual
-researchers as well. We tried permutation tests after excluding RTS data
-and get better $p$-values as before, for brevity we do not mention the
-values here.
+Figure~\ref{perm2}, once again, confirms that RTS's data is suspicious. As before, the huge fraction of data
+by RTS contributes towards the low $p$-values for some of the other
+researchers. In permutation tests after excluding RTS, none of the researchers look suspicious. For sake of brevity, we avoid mentioning the
+$p$-values here.
 
     \section{Conclusion}\label{conclusion}
 
-    Data fraud is an extremely critical issue in science, engineering and
+    Data fraud is an extremely critical issue in science, engineering, and
 many other fields. Methods to detect manipulated data are needed to
 identify fraudulent research behaviors. Detecting frauds, however, is a
 delicate matter. Challenging the credibility of a researcher or of a
 scientific work, in fact, can have heavy consequences for all the parties
 involved in the process. Methodologies and techniques used in this kind
-of work need to be clear and widely accepted, and they need to produce
-results which leave minimal (ideally no) space to ambiguity. Independently, reproducibility of
-results is a fundamental element to rule out any doubts that could arise
-at any time.
+of work need to be clear and widely accepted. They need to produce
+results which leave minimal (ideally no) space to ambiguity. Independently, reproducibility of results is a fundamental element to rule out any doubts that could arise at any time.
+In our review, we carefully analyzed the authors' work by reproducing the results in the paper and using additional tests which we believe to be more general.
+We found that authors' conclusions are correct, having been able to reproduce most of their results. 
+Moreover, we encourage the use of more powerful tools, such as permutation tests, which we proved to be effective in the context of the paper. 
+Such tests help focusing the analysis not on the assumptions, but on the actual anomalies present in the data.
 
-In our review, we carefully analyzed the authors' results
-and conclusions by: reproducing all the results that have been
-discussed in the paper and proposing and implementing additional tests to
-clarify doubts and suggesting additional possibilities to the authors.
-
-We found out that authors' results are correct, although it has not been
-possible to reproduce exactly all the experiments due to lack of some
-key pieces of information (for instance how data has been
-pre-processed). Moreover, we encourage the use of stronger tools like permutation tests and our demonstration can be considered as a promotion of the same. Such tests help the analysis to get \textit{rid of assumptions}, thereby shifting the focus from debate on assumptions to actual anomalies present and to better understanding of individual
-investigator's data (besides the RTS) as to how do they compare to the general data pool.
-
-At the end of our review, we do believe that there is a significant evidence that RTS has suspicious data, but we suggest the authors to collect additional material and investigate more, since some of our tests suggest that other investigator's
-data have anomalies as well if we do not discount the huge fraction of data given by RTS.
+At the end of our review, we do believe that there is a significant evidence that RTS has suspicious data.
+ However, we recommend the authors to collect additional information since some of our tests suggest that other investigator's data have anomalies as well, if we do not discount the huge fraction of data given by RTS.
 
 \section*{Acknowledgments} % (fold)
 \label{sec:acknowledgments}
