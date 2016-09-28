@@ -265,10 +265,11 @@ project for a Graduate Level Course on Statistical Models at UC Berkeley.
 
 % section introduction (end)
 
-We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss other methods to identify anomalies, and present results based on our analysis using Permutation Tests. Permutation tests are consistent with the aim of the paper--providing simple tools to detect anomalies--and validate the results in the paper, leading to the same conclusions.
+We review the paper in the spirit of promoting reproducibility of research and attempt to replicate the authors' work. We also discuss other methods to identify anomalies, and present results based on our analysis using Permutation Tests. 
+Permutation tests are consistent with the aim of the paper--providing simple tools to detect anomalies--and validate the results in the paper, leading to the same conclusions.
 
-Before diving into technical details, we make a minor observation: the organization of the paper was not properly introduced. The use of distinct sections for - (1) the discussion on data and experiments; (2) their model and related calculations; (3) the application of common tests from the literature and (4) conclusions - would have been helpful. The review is organized as follows. In section~\ref{reproducibility-of-results} we replicate authors' work and results.
-In section~\ref{our-analysis}, we analyze weaknesses of the approach followed in the paper and propose additional techniques to consolidate the results.
+Before diving into technical details, we make a minor observation: the organization of the paper was not properly introduced. The use of distinct sections for (1) the discussion on data and experiments; (2) their model and related calculations; (3) the application of common tests from the literature; and (4) conclusions, would have been helpful. The review is organized as follows. In section~\ref{reproducibility-of-results} we replicate authors' work and results and discuss weaknesses of their approach.
+In section~\ref{our-analysis}, we propose and implement additional tests to consolidate the results.
 We finally draw our conclusions in section~\ref{conclusion}.
 
 
@@ -281,7 +282,6 @@ The authors present some statistical figures and point out the existence of easy
 
 The authors examine datsets from radio-biological experiments. They find that data reported by one of 10 researchers, the ``RTS'', is suspicious.
 They perform three different tests to validate their suspicion and also validate their tests and assumptions by looking at the data obtained from three other sources.
-
 Each researcher made two types of triple measurements - colony counts and Coulter counts.
 The authors suspect that the RTS fabricated data triples to get the mean s/he desired in each triple by setting one observation equal to the desired mean and the other two roughly equidistant above and below that value.
 This would result in triples that contain the (rounded) mean as one of their values.
@@ -290,12 +290,11 @@ The methodological contribution of the paper is “bounds and estimates for the 
 (Different triples may have different Poisson means.)
 For this Poisson model, the chance that the RTS's data would contain so many triples that include their rounded mean is astronomically low.
 They also apply more common tests for anomalous data, based on statistics such as the frequency of the terminal digit and the frequency with which the last two digits are equal.
-
 However, some of the questions that were slightly untouched upon are discussed below:
 
 \begin{itemize}
 \item
-  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal $p$-values are likely to be misleadingly small.
+  The authors write, “Having observed what appeared to us to be an unusual frequency of triples in RTS's data containing a value close to their mean, we used R to calculate the mid-ratios for all of the colony data triples that were available to us.” This suggests that the same data--and the same feature of the data--that raised their suspicions about the RTS was the data used to test whether the RTS's data were anomalous on the basis of that feature. If so, then the nominal $p$-values are likely to be misleadingly small.
 
 \item
   Most of the tests assume a model for the observations and compare the RTS's data to that model.
@@ -335,7 +334,6 @@ We could replicate this table exactly.
 For large $\lambda\ (>2000)$, for which the authors provide only few representative probability values, our implementation suffered from numerical issues.
 
 Using Table 1, the authors determine the success probability for the BRV in two different ways and use it to compute the chance of observing the data.  For hypothesis test I (non-parametric) they used the maximum value from Table 1 as an upper bound for all triples, essentially treating all BRVs as i.i.d. Bernoulli($0.42$). Replicating this was straightforward.
-
 For hypothesis test II and III, the authors use maximum likelihood estimate of $\lambda$ for each triple to compute the corresponding success probability values, essentially treating each BRV to have a different distribution. The authors address the sum of these BRVs as a ``Poisson Binomial Random Variable".
 Additionally, for the hypothesis test III, the authors use normal approximation for the Poisson binomial random variables. 
 We could replicate the probability values, up to minor errors, for the colony data. 
@@ -512,7 +510,7 @@ Counts}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth]{images/raaz_eq_perm_summary.png}
-\caption{Permutation Tests for Terminal Digit Analysis, Coulter counts}
+\caption{Permutation Tests for Terminal Digit Analysis, Coulter Counts}
 \label{perm2}
 \end{figure}
 
