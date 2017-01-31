@@ -11,7 +11,7 @@ This review has been developed as a term project for a Graduate Level Course on 
 The organization of this repository is the following:
 * **Review** is the main review folder:
   * **Report** contains our paper review in several formats;
-  * *IPython Notebooks* contains the most relevant ipython notebooks, used to derive the conclusions in the *Report* folder;
+  * *IPython Notebooks* contains the most relevant ipython notebooks and data, used to derive the conclusions in the *Report* folder;
 * *Pitt_Hill.pdf* is the paper under review;
 * *README.md* is this file;
-* *Scrapbook* contains some working material, and it is included for transparency.
+* *Scrapbook* contains some working material, and it is included for completeness and transparency.
