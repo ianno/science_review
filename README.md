@@ -9,8 +9,8 @@ This review reproduces tests and results presented by Pitt and Hill and discusse
 This review has been developed as a term project for a Graduate Level Course on Statistical Models at UC Berkeley.
 
 The organization of this repository is the following:
-* *Pitt_Hill.pdf* is the paper under review; transparency;
+* *Pitt_Hill.pdf* is the paper under review;
 * **Review** is the main review folder:
   * **Report** contains our paper review in several formats;
   * *IPython Notebooks* contains the most relevant ipython notebooks, used to derive the conclusions in the *Report* folder.
-* *Scrapbook* contains some working material, and it is included for
+* *Scrapbook* contains some working material, and it is included for transparency;
